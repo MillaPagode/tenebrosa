@@ -7,81 +7,150 @@
 <title>Painel Tenebrosa</title>
 
 <style>
-body {
-    margin: 0;
-    background: #12001f;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
+body{
+margin:0;
+background:#100019;
+color:white;
+font-family:Arial;
+text-align:center;
 }
 
-.caixa {
-    margin: 50px auto;
-    width: 80%;
-    max-width: 600px;
-    background: #25003d;
-    border: 3px solid #d88cff;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 0 20px #d88cff;
+.painel{
+margin:40px auto;
+width:80%;
+max-width:650px;
+background:#25003d;
+border:3px solid #d88cff;
+border-radius:25px;
+padding:30px;
+box-shadow:0 0 25px #d88cff;
 }
 
-h1 {
-    color: #d88cff;
-    font-size: 40px;
+h1{
+color:#d88cff;
+font-size:38px;
 }
 
-h2 {
-    color: white;
+.relogio{
+font-size:45px;
+margin:20px;
 }
 
-.dj {
-    background: #160025;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 25px;
-    color: #ffd166;
+.titulo{
+color:#ffd166;
+font-size:22px;
 }
 
-footer {
-    margin-top: 30px;
-    color: #ccc;
+.dj{
+font-size:32px;
+margin:15px;
 }
 
+.proximo{
+font-size:22px;
+color:#9ee7ff;
+}
+
+.lista{
+margin-top:30px;
+font-size:20px;
+line-height:1.8;
+}
 </style>
 
 </head>
 
 <body>
 
-<div class="caixa">
+<div class="painel">
 
 <h1>🎧 PAINEL TENEBROSA 🎧</h1>
 
-<h2>Família Pagode</h2>
+<div class="relogio" id="hora"></div>
 
-<div class="dj">
-🕖 19:00 - DJ_Milla_Pagode
+<div class="titulo">
+DJ TOCANDO AGORA
 </div>
 
-<div class="dj">
-🕗 20:00 - DJ_Edson_Pagode
+<div class="dj" id="djAtual">
+Carregando...
 </div>
 
-<div class="dj">
-🕘 21:00 - Próximo DJ
+<div class="titulo">
+PRÓXIMO DJ
 </div>
 
-<div class="dj">
-🎶 Programação Oficial
+<div class="proximo" id="proximo">
+Carregando...
 </div>
+
+
+<div class="lista">
+
+19:00 - DJ_Milla_Pagode<br>
+20:00 - DJ_Edson_Pagode<br>
+21:00 - Próximo DJ
 
 </div>
 
-<footer>
-✨ Baixo Cidade ✨
-</footer>
+</div>
+
+
+<script>
+
+let agenda=[
+{hora:19,nome:"DJ_Milla_Pagode"},
+{hora:20,nome:"DJ_Edson_Pagode"},
+{hora:21,nome:"Próximo DJ"}
+];
+
+
+function atualizar(){
+
+let agora=new Date();
+
+let hora=agora.getHours();
+let minuto=agora.getMinutes();
+
+
+document.getElementById("hora").innerHTML =
+String(hora).padStart(2,"0")+":"+String(minuto).padStart(2,"0");
+
+
+let atual="Aguardando...";
+let prox="Encerrado";
+
+
+for(let i=0;i<agenda.length;i++){
+
+if(hora>=agenda[i].hora){
+
+atual=agenda[i].nome;
+
+if(agenda[i+1]){
+prox=agenda[i+1].nome;
+}
+
+}
+
+}
+
+
+document.getElementById("djAtual").innerHTML=atual;
+
+document.getElementById("proximo").innerHTML=prox;
+
+
+}
+
+
+setInterval(atualizar,1000);
+
+atualizar();
+
+
+</script>
+
 
 </body>
 </html>
