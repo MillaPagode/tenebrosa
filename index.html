@@ -1,36 +1,187 @@
-<!doctype html><html lang="pt-br"><meta charset="utf-8">
-<title>Equipe Tenebrosa</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel Oficial Tenebrosa</title>
+
 <style>
-body{margin:0;background:radial-gradient(circle,#24103d,#05030a);color:#fff;font-family:Arial;text-align:center;overflow:hidden}
-.wrap{padding:24px}h1{color:#b56cff;text-shadow:0 0 15px #b56cff}
-#clock{font-size:42px;font-weight:bold}#dj{font-size:36px;color:#7fff00;font-weight:bold}
-#next,#time{font-size:22px}.eq{display:flex;justify-content:center;gap:5px;margin:15px}
-.eq div{width:8px;background:#b56cff;animation:eq 1s infinite alternate}
-.eq div:nth-child(2){animation-delay:.2s}.eq div:nth-child(3){animation-delay:.4s}.eq div:nth-child(4){animation-delay:.6s}.eq div:nth-child(5){animation-delay:.8s}
-@keyframes eq{from{height:12px}to{height:50px}}
-</style><body><div class=wrap>
-<h1>🎧 EQUIPE TENEBROSA 🎧</h1><div><i>"Simbora ser feliz"</i></div>
-<div id=clock></div><div class=eq><div></div><div></div><div></div><div></div><div></div></div>
-<h2>AGORA TOCANDO</h2><div id=dj></div><div id=time></div><h3>PRÓXIMO DJ</h3><div id=next></div>
-<script>
-const agenda=[
-['19:00','20:15','DJ Milla Pagode'],
-['20:15','21:30','DJ Arley Sá Dreams'],
-['21:30','22:45','DJ Pérola Helsing'],
-['22:45','24:00','DJ Edson Pagode']
-];
-const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m}
-function tick(){
- const d=new Date();
- clock.textContent=d.toLocaleTimeString('pt-BR');
- const now=d.getHours()*60+d.getMinutes();
- let found=false;
- for(let i=0;i<agenda.length;i++){
-  let[s,e,n]=agenda[i];
-  if(now>=toMin(s)&&now<toMin(e)){found=true;dj.textContent=n;time.textContent=s+' às '+(e=='24:00'?'00:00':e);
-   next.textContent=i<agenda.length-1?agenda[i+1][2]+' - '+agenda[i+1][0]+' às '+agenda[i+1][1]:'Obrigado por participar!';break;}
- }
- if(!found){dj.textContent='Fora da programação';time.textContent='';next.textContent='Equipe Tenebrosa';}
+body{
+margin:0;
+background:#100019;
+color:white;
+font-family:Arial,sans-serif;
+text-align:center;
 }
-tick();setInterval(tick,1000);
-</script></body></html>
+
+.painel{
+width:85%;
+max-width:700px;
+margin:40px auto;
+background:#220033;
+border:3px solid #d88cff;
+border-radius:25px;
+padding:25px;
+box-shadow:0 0 25px #d88cff;
+}
+
+h1{
+color:#d88cff;
+font-size:36px;
+}
+
+.relogio{
+font-size:45px;
+color:#ffd166;
+margin:20px;
+}
+
+.titulo{
+font-size:22px;
+color:#9ee7ff;
+margin-top:20px;
+}
+
+.djAtual{
+font-size:34px;
+color:#ffd166;
+margin:15px;
+}
+
+.proximo{
+font-size:26px;
+color:#ffffff;
+}
+
+.agenda{
+margin-top:30px;
+font-size:22px;
+line-height:1.8;
+}
+
+.item{
+background:#160025;
+border-radius:15px;
+padding:10px;
+margin:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="painel">
+
+<h1>🎧 PAINEL OFICIAL TENEBROSA 🎧</h1>
+
+<div class="relogio" id="hora"></div>
+
+
+<div class="titulo">
+🎧 DJ TOCANDO AGORA
+</div>
+
+<div class="djAtual" id="atual">
+Aguardando...
+</div>
+
+
+<div class="titulo">
+🔜 PRÓXIMO DJ
+</div>
+
+<div class="proximo" id="proximo">
+Aguardando...
+</div>
+
+
+<div class="titulo">
+📋 AGENDA DOS DJs
+</div>
+
+<div class="agenda">
+
+<div class="item">
+🕖 19:00 às 20:15<br>
+🎧 DJ_Milla_Pagode
+</div>
+
+<div class="item">
+🕗 20:15 às 21:30<br>
+🎧 DJ_Arley_Sá_Dreams
+</div>
+
+<div class="item">
+🕤 21:30 às 22:45<br>
+🎧 DJ_Pérola_Helsing
+</div>
+
+<div class="item">
+🕚 22:45 às 00:00<br>
+🎧 DJ_Edson_Pagode
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+let agenda=[
+{inicio:19.00,fim:20.15,dj:"DJ_Milla_Pagode"},
+{inicio:20.15,fim:21.30,dj:"DJ_Arley_Sá_Dreams"},
+{inicio:21.30,fim:22.45,dj:"DJ_Pérola_Helsing"},
+{inicio:22.45,fim:24.00,dj:"DJ_Edson_Pagode"}
+];
+
+
+function atualizar(){
+
+let agora=new Date();
+
+let h=agora.getHours();
+let m=agora.getMinutes();
+
+let horaAtual=h+(m/100);
+
+document.getElementById("hora").innerHTML=
+String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
+
+
+let atual="Aguardando início";
+let proximo="Encerrado";
+
+
+for(let i=0;i<agenda.length;i++){
+
+if(horaAtual>=agenda[i].inicio && horaAtual<agenda[i].fim){
+
+atual=agenda[i].dj;
+
+if(agenda[i+1]){
+proximo=agenda[i+1].dj;
+}
+
+}
+
+}
+
+
+document.getElementById("atual").innerHTML=atual;
+document.getElementById("proximo").innerHTML=proximo;
+
+}
+
+
+setInterval(atualizar,1000);
+atualizar();
+
+</script>
+
+
+</body>
+</html>
