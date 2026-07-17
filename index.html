@@ -7,178 +7,316 @@
 <title>Painel Oficial Tenebrosa</title>
 
 <style>
+
 body{
 margin:0;
-background:#100019;
+background:
+radial-gradient(circle,#8b0000 0%,#220000 35%,#000 75%);
 color:white;
 font-family:Arial,sans-serif;
 text-align:center;
+overflow:hidden;
 }
+
+
+/* efeito de luz */
+body:before{
+content:"";
+position:fixed;
+width:500px;
+height:500px;
+background:red;
+filter:blur(120px);
+opacity:.25;
+animation:luz 5s infinite alternate;
+}
+
+@keyframes luz{
+from{transform:translate(-100px,-100px);}
+to{transform:translate(100px,100px);}
+}
+
 
 .painel{
+
 width:85%;
 max-width:700px;
-margin:40px auto;
-background:#220033;
-border:3px solid #d88cff;
+margin:30px auto;
+background:rgba(0,0,0,.85);
+border:3px solid #ff0000;
 border-radius:25px;
 padding:25px;
-box-shadow:0 0 25px #d88cff;
+box-shadow:
+0 0 20px red,
+0 0 40px #660000;
+
 }
+
 
 h1{
-color:#d88cff;
-font-size:36px;
+
+font-size:38px;
+color:#ff2222;
+text-shadow:
+0 0 10px red,
+0 0 20px red;
+
 }
+
+
+.aoVivo{
+
+display:inline-block;
+background:red;
+padding:8px 20px;
+border-radius:30px;
+font-weight:bold;
+animation:pulsar 1s infinite;
+
+}
+
+
+@keyframes pulsar{
+
+50%{
+box-shadow:0 0 25px red;
+}
+
+}
+
+
 
 .relogio{
+
 font-size:45px;
-color:#ffd166;
+color:#fff;
 margin:20px;
+
 }
+
 
 .titulo{
+
 font-size:22px;
-color:#9ee7ff;
+color:#ff5555;
 margin-top:20px;
+
 }
+
+
 
 .djAtual{
-font-size:34px;
-color:#ffd166;
+
+font-size:35px;
+color:#ffd700;
 margin:15px;
+text-shadow:0 0 15px orange;
+
 }
+
 
 .proximo{
-font-size:26px;
-color:#ffffff;
+
+font-size:25px;
+
 }
 
-.agenda{
-margin-top:30px;
-font-size:22px;
-line-height:1.8;
-}
+
 
 .item{
-background:#160025;
+
+background:#150000;
+border:1px solid #990000;
 border-radius:15px;
-padding:10px;
+padding:12px;
 margin:10px;
+font-size:21px;
+
 }
+
+
+.agenda{
+
+margin-top:25px;
+
+}
+
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="painel">
 
-<h1>🎧 PAINEL OFICIAL TENEBROSA 🎧</h1>
 
-<div class="relogio" id="hora"></div>
+<div class="aoVivo">
+🔴 AO VIVO
+</div>
+
+
+<h1>
+🔥 TENEBROSA 🔥
+</h1>
+
+
+<h2>
+🎧 Painel Oficial da Equipe
+</h2>
+
+
+<div class="relogio" id="hora">
+00:00
+</div>
+
 
 
 <div class="titulo">
 🎧 DJ TOCANDO AGORA
 </div>
 
+
 <div class="djAtual" id="atual">
 Aguardando...
 </div>
+
 
 
 <div class="titulo">
 🔜 PRÓXIMO DJ
 </div>
 
+
 <div class="proximo" id="proximo">
 Aguardando...
 </div>
+
+
 
 
 <div class="titulo">
 📋 AGENDA DOS DJs
 </div>
 
+
+
 <div class="agenda">
+
 
 <div class="item">
 🕖 19:00 às 20:15<br>
 🎧 DJ_Milla_Pagode
 </div>
 
+
 <div class="item">
 🕗 20:15 às 21:30<br>
 🎧 DJ_Arley_Sá_Dreams
 </div>
+
 
 <div class="item">
 🕤 21:30 às 22:45<br>
 🎧 DJ_Pérola_Helsing
 </div>
 
+
 <div class="item">
 🕚 22:45 às 00:00<br>
 🎧 DJ_Edson_Pagode
 </div>
 
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <script>
 
+
 let agenda=[
-{inicio:19.00,fim:20.15,dj:"DJ_Milla_Pagode"},
+
+{inicio:19,fim:20.15,dj:"DJ_Milla_Pagode"},
+
 {inicio:20.15,fim:21.30,dj:"DJ_Arley_Sá_Dreams"},
+
 {inicio:21.30,fim:22.45,dj:"DJ_Pérola_Helsing"},
-{inicio:22.45,fim:24.00,dj:"DJ_Edson_Pagode"}
+
+{inicio:22.45,fim:24,dj:"DJ_Edson_Pagode"}
+
 ];
+
 
 
 function atualizar(){
 
+
 let agora=new Date();
 
 let h=agora.getHours();
+
 let m=agora.getMinutes();
 
-let horaAtual=h+(m/100);
+
+let tempo=h+(m/100);
+
+
 
 document.getElementById("hora").innerHTML=
+
 String(h).padStart(2,"0")+":"+String(m).padStart(2,"0");
 
 
+
 let atual="Aguardando início";
-let proximo="Encerrado";
+
+let prox="Encerrado";
+
 
 
 for(let i=0;i<agenda.length;i++){
 
-if(horaAtual>=agenda[i].inicio && horaAtual<agenda[i].fim){
+
+if(tempo>=agenda[i].inicio && tempo<agenda[i].fim){
+
 
 atual=agenda[i].dj;
 
+
 if(agenda[i+1]){
-proximo=agenda[i+1].dj;
-}
+
+prox=agenda[i+1].dj;
 
 }
 
+
 }
+
+
+}
+
 
 
 document.getElementById("atual").innerHTML=atual;
-document.getElementById("proximo").innerHTML=proximo;
+
+document.getElementById("proximo").innerHTML=prox;
+
 
 }
 
 
+
 setInterval(atualizar,1000);
+
 atualizar();
+
+
 
 </script>
 
